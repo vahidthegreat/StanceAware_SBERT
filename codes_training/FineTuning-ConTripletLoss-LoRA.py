@@ -24,10 +24,6 @@ removal_cutoff_contrastive = 0.5
 removal_cutoff_triplet = 0.3
 # removal_cutoff = 0.0
 
-
-# from torchview import draw_graph
-# from torchsummary import summary
-
 from transformers import (
     AdamW,
     AutoModel,
@@ -35,15 +31,6 @@ from transformers import (
     get_linear_schedule_with_warmup,
     set_seed,
 )
-
-# bnb_config = BitsAndBytesConfig(
-#         load_in_4bit=True,
-#         bnb_4bit_quant_type='nf4',
-#         bnb_4bit_compute_dtype='float16',
-#         bnb_4bit_use_double_quant=False
-#         )
-
-
 
 peft_config = LoraConfig(
         r=32,
@@ -57,7 +44,7 @@ peft_config = LoraConfig(
 
 
 
-meta_data = pd.read_excel('/home/vahid_ghafouri/StanceAwareSBERT/Datasets/Kialo_MetaData_all.xlsx')
+meta_data = pd.read_excel('Datasets/Kialo_MetaData_all.xlsx')
 meta_data = meta_data[meta_data['language']=='en']
 post_id_set = list(set(list(meta_data["post_id"])))
 
@@ -68,7 +55,7 @@ test_indices = []
 train_indices, test_indices = train_test_split(post_id_set, test_size=0.1, random_state=1)  # Adjust the test_size as needed
 
 
-sentence_triplets_df = pd.read_csv('/csg_nas/Vahid/Datasets/Kialo/argument_triplets_branchleaf.csv')
+sentence_triplets_df = pd.read_csv('Datasets/Kialo/argument_triplets_branchleaf.csv')
 
 print(f"original length: {len(sentence_triplets_df)}")
 sentence_triplets_df = sentence_triplets_df.dropna()
@@ -120,7 +107,7 @@ class CustomDataset_Triplet(Dataset):
 
 
 
-sentence_pairs_df = pd.concat([pd.read_csv('/csg_nas/Vahid/Datasets/Kialo/argument_pairs_branchleaf.csv'),pd.read_csv('/csg_nas/Vahid/Datasets/Kialo/argument_pairs_leafleaf.csv')],ignore_index=True)
+sentence_pairs_df = pd.concat([pd.read_csv('Datasets/Kialo/argument_pairs_branchleaf.csv'),pd.read_csv('Datasets/Kialo/argument_pairs_leafleaf.csv')],ignore_index=True)
 sentence_pairs_df = sentence_pairs_df[(sentence_pairs_df['stance']=='Pro') | (sentence_pairs_df['stance']=='Con')]
 sentence_pairs_df['stance_numeric'] = sentence_pairs_df['stance'].map({'Pro':1,'Con':0})
 print(f"original length: {len(sentence_pairs_df)}")
@@ -286,8 +273,6 @@ for margin_x in all_margins:
                 progress_bar.set_postfix({'Type':'Triplet','Margin':margin_x,'Epoch': epoch,'Avg-Loss': f'{avg_loss*1000:.2f}','Loss': f'{loss.item()*1000:.2f}'})
                 loss_info_df = pd.concat([loss_info_df, pd.DataFrame([{'Loss-Type':'Triplet','Margin':margin_x,'Epoch': epoch,'Average-Loss': avg_loss,'MiniBatch-Loss':loss.item()}])], ignore_index=True)
 
-            # ... (previous code)
-
         # If the last batch has not completed the accumulation step, perform parameter update
         if (batch_idx + 1) % accumulation_steps != 0:
             torch.nn.utils.clip_grad_norm_(model.parameters(), max_grad_norm)
@@ -311,16 +296,7 @@ for margin_x in all_margins:
 
     dataset = CustomDataset_Contrastive(sentence_pairs_train_df)
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
-
-#     # Instantiate optimizer
-#     optimizer = torch.optim.AdamW(params=model.parameters(), lr=2e-5)#, correct_bias=True)
-
-#     lr_scheduler = get_linear_schedule_with_warmup(
-#         optimizer=optimizer,
-#         num_warmup_steps=500,
-#         num_training_steps=total_epochs,
-#     )
-
+    
     # Now we train the model
 
     if len(sentence_pairs_train_df) % batch_size != 0:
@@ -392,7 +368,7 @@ for margin_x in all_margins:
             
             
             
-        models_dir = '/csg_nas/Vahid/Datasets/StanceAwareSBERT/Models/'
+        models_dir = 'Models/'
         model_save_path = f'{models_dir}MPNet_contriplet_removal_{int(removal_cutoff_contrastive*100)}_margin_{int(margin_x*100)}_epoch_{2 + epoch}'
         model.save_pretrained(model_save_path)
     #         torch.save(model.state_dict(), model_save_path)
