@@ -56,7 +56,7 @@ peft_config = LoraConfig(
 
 
 
-sentence_pairs_df = pd.concat([pd.read_csv('/csg_nas/Vahid/Datasets/Kialo/argument_pairs_branchleaf.csv'),pd.read_csv('/csg_nas/Vahid/Datasets/Kialo/argument_pairs_leafleaf.csv')],ignore_index=True)
+sentence_pairs_df = pd.concat([pd.read_csv('Datasets/Kialo/argument_pairs_branchleaf.csv'),pd.read_csv('Datasets/Kialo/argument_pairs_leafleaf.csv')],ignore_index=True)
 sentence_pairs_df = sentence_pairs_df[(sentence_pairs_df['stance']=='Pro') | (sentence_pairs_df['stance']=='Con')]
 sentence_pairs_df['stance_numeric'] = sentence_pairs_df['stance'].map({'Pro':1,'Con':0})
 print(f"original length: {len(sentence_pairs_df)}")
@@ -72,7 +72,7 @@ print(f"length after removing short sentences: {len(sentence_pairs_df)}")
 # Splitting into train and test sets
 # sentence_pairs_df, sentence_pairs_test_df = train_test_split(sentence_pairs_df, test_size=0.1, random_state=1)
 # Group the DataFrame by "post_id"
-meta_data = pd.read_excel('/home/vahid_ghafouri/StanceAwareSBERT/Datasets/Kialo_MetaData_all.xlsx')
+meta_data = pd.read_excel('Datasets/Kialo_MetaData_all.xlsx')
 meta_data = meta_data[meta_data['language']=='en']
 post_id_set = list(set(list(meta_data["post_id"])))
 # Initialize empty lists for train and test indices
@@ -245,7 +245,7 @@ for margin_x in all_margins:
             progress_bar.update((batch_idx + 1) % accumulation_steps)  # Update progress bar for remaining updates
             progress_bar.set_postfix({'Epoch': epoch,'Average-Loss': f'{avg_loss*1000:.2f}','MiniBatch-Loss': f'{loss.item()*1000:.2f}'})  # Update loss for the last batch of the epoch
             loss_info_df = pd.concat([loss_info_df, pd.DataFrame([{'Epoch': epoch,'Average-Loss': avg_loss,'MiniBatch-Loss':loss.item()}])], ignore_index=True)
-        models_dir = '/csg_nas/Vahid/Datasets/StanceAwareSBERT/Models/'
+        models_dir = 'Datasets/StanceAwareSBERT/Models/'
         model_save_path = f'{models_dir}MPNet_contrastive_removal_{int(removal_cutoff*100)}_margin_{int(margin_x*100)}_epoch_{epoch}'
         model.save_pretrained(model_save_path)
     #         torch.save(model.state_dict(), model_save_path)
