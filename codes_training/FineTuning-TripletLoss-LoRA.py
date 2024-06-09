@@ -24,9 +24,6 @@ from transformers import (
 removal_cutoff = 0.0
 
 
-# from torchview import draw_graph
-# from torchsummary import summary
-
 from transformers import (
     AdamW,
     AutoModel,
@@ -55,24 +52,17 @@ peft_config = LoraConfig(
 #         modules_to_save = ["lm_head", "embed_tokens"]   # because we added new tokens
         )
 
-# sentence_triplets_df = pd.concat([pd.read_csv('/csg_nas/Vahid/Datasets/Kialo/argument_triplets_branchleaf.csv'),pd.read_csv('Datasets/argument_pairs_leafleaf.csv')],ignore_index=True)
-sentence_triplets_df = pd.read_csv('/csg_nas/Vahid/Datasets/Kialo/argument_triplets_branchleaf.csv')
-# sentence_triplets_df = sentence_triplets_df[(sentence_triplets_df['stance']=='Pro') | (sentence_triplets_df['stance']=='Con')]
-# sentence_triplets_df['stance_numeric'] = sentence_triplets_df['stance'].map({'Pro':1,'Con':0})
+sentence_triplets_df = pd.read_csv('Datasets/Kialo/argument_triplets_branchleaf.csv')
 print(f"original length: {len(sentence_triplets_df)}")
 sentence_triplets_df = sentence_triplets_df.dropna()
 print(f"length after droping nulls: {len(sentence_triplets_df)}")
-# sentence_triplets_df = sentence_triplets_df[sentence_triplets_df['sentence_i'] != sentence_triplets_df['sentence_j']]
-# sentence_triplets_df['sorted_sentences'] = sentence_triplets_df.progress_apply(lambda row: tuple(sorted([row['sentence_i'], row['sentence_j']])), axis=1)
-# sentence_triplets_df.drop_duplicates(subset='sorted_sentences',inplace=True)
-# sentence_triplets_df.drop(columns=['sorted_sentences'],inplace=True)
 sentence_triplets_df.drop_duplicates(inplace=True)
 print(f"length after dropping duplicates: {len(sentence_triplets_df)}")
 sentence_triplets_df = sentence_triplets_df[(sentence_triplets_df['text_anchor'].progress_apply(lambda x: len(x.split(' ')))>3) & (sentence_triplets_df['text_pro'].progress_apply(lambda x: len(x.split(' ')))>3) & (sentence_triplets_df['text_con'].progress_apply(lambda x: len(x.split(' ')))>3)]
 print(f"length after removing short sentences: {len(sentence_triplets_df)}")
 # Splitting into train and test sets
 # Group the DataFrame by "post_id"
-meta_data = pd.read_excel('/home/vahid_ghafouri/StanceAwareSBERT/Datasets/Kialo_MetaData_all.xlsx')
+meta_data = pd.read_excel('Datasets/Kialo_MetaData_all.xlsx')
 meta_data = meta_data[meta_data['language']=='en']
 post_id_set = list(set(list(meta_data["post_id"])))
 
@@ -236,7 +226,7 @@ for margin_x in all_margins:
             progress_bar.update((batch_idx + 1) % accumulation_steps)  # Update progress bar for remaining updates
             progress_bar.set_postfix({'Epoch': epoch,'Average-Loss': f'{avg_loss*1000:.2f}','MiniBatch-Loss': f'{loss.item()*1000:.2f}'})  # Update loss for the last batch of the epoch
             loss_info_df = pd.concat([loss_info_df, pd.DataFrame([{'Epoch': epoch,'Average-Loss': avg_loss,'MiniBatch-Loss':loss.item()}])], ignore_index=True)
-        models_dir = '/csg_nas/Vahid/Datasets/StanceAwareSBERT/Models/'
+        models_dir = 'Models/'
         model_save_path = f'{models_dir}MPNet_triplet_removal_{int(removal_cutoff*100)}_margin_{int(margin_x*100)}_epoch_{epoch}'
         model.save_pretrained(model_save_path)
     #         torch.save(model.state_dict(), model_save_path)
