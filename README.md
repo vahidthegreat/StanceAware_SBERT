@@ -1,25 +1,24 @@
-This repository includes the material for the paper called "[anonymous]".
+# Repository for the Paper: *I love pineapple on pizza* != *I hate pineapple on pizza*: Stance-Aware Sentence Transformers for Opinion Mining
 
-The paper is still under review.
-More extensive data and code will be added after publication.
+This repository contains the materials for the paper titled "*I love pineapple on pizza* != *I hate pineapple on pizza*: Stance-Aware Sentence Transformers for Opinion Mining."
 
+The paper will appear at *EMNLP 2024* (Main Conference). More extensive data and code will be added soon.
 
-Libraries and versions:
+## Libraries and Versions
 
-torch: 2.1.1+cu121
-huggingface_hub: 0.24.3
-transformers: 4.43.3
-tokenizers: 0.19.1
-sentence_transformers: 2.2.2
-peft: 0.7.1
+- `torch`: 2.1.1+cu121  
+- `huggingface_hub`: 0.24.3  
+- `transformers`: 4.43.3  
+- `tokenizers`: 0.19.1  
+- `sentence_transformers`: 2.2.2  
+- `peft`: 0.7.1
 
-scipy: 1.10.0
-accelerate: 0.26.1
-tzdata: 2023.3
-pytz: 2022.1
-pyarrow: 13.0.0
-pandas: 1.5.3
-matplotlib: 3.6.3
-pyparsing: 2.4.7
-matplotlib: 3.6.3
-seaborn: 0.12.2
+- `scipy`: 1.10.0  
+- `accelerate`: 0.26.1  
+- `tzdata`: 2023.3  
+- `pytz`: 2022.1  
+- `pyarrow`: 13.0.0  
+- `pandas`: 1.5.3  
+- `matplotlib`: 3.6.3  
+- `pyparsing`: 2.4.7  
+- `seaborn`: 0.12.2
