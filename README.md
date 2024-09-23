@@ -2,7 +2,7 @@
 
 This repository contains the materials for the paper titled "*I love pineapple on pizza* != *I hate pineapple on pizza*: Stance-Aware Sentence Transformers for Opinion Mining."
 
-The paper will appear at *EMNLP 2024* (Main Conference). More extensive data and code will be added soon.
+The paper will appear at *EMNLP 2024 (Main Conference)*. More extensive data and code will be added soon.
 
 ## Libraries and Versions
 
