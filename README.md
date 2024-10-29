@@ -2,7 +2,8 @@
 
 This repository contains the materials for the paper titled "*I love pineapple on pizza* != *I hate pineapple on pizza*: Stance-Aware Sentence Transformers for Opinion Mining."
 
-The paper will appear at *EMNLP 2024 (Main Conference)*. More extensive data and code will be added soon.
+The [paper will appear at EMNLP 2024](https://scholar.google.com/citations?view_op=view_citation&hl=en&user=RnPFjYcAAAAJ&citation_for_view=RnPFjYcAAAAJ:W7OEmFMy1HYC). More extensive data and code will be added soon.
+The finetuned language model can be downloaded from [this repository](https://huggingface.co/vahidthegreat/StanceAware-SBERT) at huggingface.
 
 ## Libraries and Versions
 
