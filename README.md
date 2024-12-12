@@ -23,3 +23,6 @@ The finetuned language model can be downloaded from [this repository](https://hu
 - `matplotlib`: 3.6.3  
 - `pyparsing`: 2.4.7  
 - `seaborn`: 0.12.2
+
+
+This project was funded by COMET.
